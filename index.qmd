@@ -1,0 +1,536 @@
+---
+title: "Sample size estimation"
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+source(here::here("R/quarto-setup.R"))
+```
+
+<!-- badges: start -->
+[![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
+<!-- badges: end -->
+
+## Overview
+
+The aim of this analysis is to estimate the sample size for a study on the effects of sleep disruption and sleep duration on labor duration (the `pregnancy` study), with the goal of replicating the findings of @lee2004.
+
+## Effect size estimation (Cohen's f)
+
+See @cohen1988, @frey2022, and @maxwell2018 to learn more.
+
+### Parameters
+
+The parameters for the effect size were extracted from @lee2004, as shown below.
+
+> Controlling for infant birth weight, ANCOVA indicated that the degree of prenatal sleep disruption \[WASO\] had a significant effect on labor duration (F[2,125] = 6.93, P = .001). [@lee2004, pp. 2044]
+
+> Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a signiﬁcant eﬀect on labor duration (F[2,125] = 5.54, P = .005). [@lee2004, pp. 2044]
+
+> WASO = Wakefulness after sleep onset. TST = Total sleep time.
+
+::: {.grid}
+
+::: {.g-col-1}
+:::
+
+::: {#tbl-1 .g-col-10}
+|            | n  | Labor duration* (mean ± SD) |
+|------------|----|---------------------------------|
+| **WASO**   |    |                                 |
+| 15%+       | 41 | 26.0 ± 11.7†                    |
+| 10%-14.9%  | 32 | 16.3 ± 12.9                     |
+| <10%       | 58 | 18.3 ± 14.6                     |
+| **TST**    |    |                                 |
+| < 6 h      | 19 | 29.0 ± 12.5†                    |
+| 6-6.9 h    | 38 | 20.5 ± 11.3                     |
+| 7+ h       | 74 | 17.7 ± 15.6                     |
+
+<p style="font-size: .9rem;color: #5a6570;">\*Adjusted for infant birth weight.</p>
+<p style="margin-top: -0.25em; font-size: .9rem;color: #5a6570;">†Significantly longer labor than the other 2 groups.</p>
+
+<p style="font-size: .9rem;color: #5a6570;text-align:center">Source: @lee2004 [pp. 2044].</p>
+
+Differences in labor duration by total sleep time and wake after sleep onset (n = 131) {.striped .hover}
+:::
+
+::: {.g-col-1}
+:::
+
+:::
+
+### WASO
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+
+library(cli)
+library(dplyr)
+library(stats)
+library(pwr)
+```
+
+```{r}
+# Group 1: 15+
+n_1_waso <- 41
+mean_1_adj_waso <- 26 # Significantly longer labor than the other 2 groups.
+sd_1_waso <- 11.7
+
+# Group 2: 10%-14.9%
+n_2_waso <- 32
+mean_2_adj_waso <- 16.3
+sd_2_waso <- 12.9
+
+# Group 3: <10%
+n_3_waso <- 58
+mean_3_adj_waso <- 18.3
+sd_3_waso <- 14.6
+
+n_total_waso <- sum(n_1_waso, n_2_waso, n_3_waso)
+
+k <- 3
+num_df <- 2
+den_df <- 125
+n_total_waso <- den_df + k
+f_test <- 6.93
+
+# See Maxwell et al. (2018, p. 150)
+f_unb_waso <- 
+  ((k - 1) / n_total_waso) %>%
+  `*`(((n_total_waso - k - 2) / (n_total_waso - k)) * (f_test - 1)) |> 
+  sqrt()
+
+f_unb_waso
+```
+
+### TST
+
+```{r}
+# Group 1: <6 h
+n_1_tst <- 19
+mean_1_adj_tst <- 29 # Significantly longer labor than the other 2 groups.
+sd_1_tst <- 12.5
+
+# Group 2: 6-6.9 h
+n_2_tst <- 38
+mean_2_adj_tst <- 20.5
+sd_2_tst <- 11.3
+
+# Group 3: 7+ h
+n_3_tst <- 74
+mean_3_adj_tst <- 17.7
+sd_3_tst <- 15.6
+
+n_total_tst <- sum(n_1_tst, n_2_tst, n_3_tst)
+
+k <- 3
+num_df <- 2
+den_df <- 125
+n_total_tst <- den_df + k
+f_test <- 5.54
+
+# See Maxwell et al. (2018, p. 150)
+f_unb_tst <- 
+  ((k - 1) / n_total_tst) %>%
+  `*`(((n_total_tst - k - 2) / (n_total_tst - k)) * (f_test - 1)) |> 
+  sqrt()
+
+f_unb_tst
+```
+
+## Sample size estimation
+
+### Parameters
+
+```{r}
+alpha <- 0.05
+power <- 0.8
+k <- 3 # Number of groups
+```
+
+### Using the [`pwr`](https://github.com/heliosdrm/pwr) R package
+
+It's important to note that, according to @cohen1988 [pp. 403]:
+
+> [...] sample size estimation in the analysis of covariance proceeds in exactly the same way as in analogous analysis of variance designs. 
+
+#### WASO
+
+```{r}
+test <- pwr::pwr.anova.test(
+  k = k, 
+  f = f_unb_waso, 
+  sig.level = alpha, 
+  power = power
+)
+
+test
+```
+
+```{r}
+pwr::plot.power.htest(test, type = "b", main = "WASO")
+```
+
+```{r}
+ceiling(test$n * k) # Total sample size
+```
+
+#### TST
+
+```{r}
+test <- pwr::pwr.anova.test(
+  k = k, 
+  f = f_unb_tst, 
+  sig.level = alpha, 
+  power = power
+)
+
+test
+```
+
+```{r}
+pwr::plot.power.htest(test, type = "b", main = "WASO")
+```
+
+```{r}
+ceiling(test$n * k) # Total sample size
+```
+
+### Using the G*Power software
+
+See @faul2007 to learn more.
+
+#### WASO
+
+```{txt}
+F tests - ANCOVA: Fixed effects, main effects and interactions
+Analysis:	A priori: Compute required sample size 
+Input:	Effect size f	=	0.3019499
+	α err prob	=	0.05
+	Power (1-β err prob)	=	0.8
+	Numerator df	=	2
+	Number of groups	=	3
+	Number of covariates	=	1
+Output:	Noncentrality parameter λ	=	9.9379379
+	Critical F	=	3.0828520
+	Denominator df	=	105
+	Total sample size	=	109
+	Actual power	=	0.8009725
+```
+
+#### TST
+
+```{txt}
+F tests - ANCOVA: Fixed effects, main effects and interactions
+Analysis:	A priori: Compute required sample size 
+Input:	Effect size f	=	0.2642016
+	α err prob	=	0.05
+	Power (1-β err prob)	=	0.8
+	Numerator df	=	2
+	Number of groups	=	3
+	Number of covariates	=	1
+Output:	Noncentrality parameter λ	=	9.9119529
+	Critical F	=	3.0617157
+	Denominator df	=	138
+	Total sample size	=	142
+	Actual power	=	0.8027593
+```
+
+### Using Shieh's method
+
+See @shieh2020 to learn more.
+
+```{r}
+#' Compute a power analysis and sample size for an ANCOVA design
+#'
+#' @description
+#'
+#' `ancova_muhtpo()` compute the __power__ and  `ancova_muhtnp()` the
+#' __sample size__ for a generalized linear hypothesis tests of treatment
+#' effects.
+#'
+#' These functions were adapted from "Program C" and "Program D" algorithms
+#' found in Shieh (2020) supplementary material.
+#'
+#' See Cohen (1988) to learn more about power analysis .
+#'
+#' @details
+#'
+#' ## `contrast` parameter
+#'
+#' If `contrast = NULL`, `ancova_muhtnp()` will use the following contrast
+#' matrix:
+#'
+#' `cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))`
+#'
+#' * Example:
+#'
+#' ```{r}
+#' group_n <- 3
+#'
+#' cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))
+#' ```
+#'
+#' Learn more about "contrast matrices" at
+#' \url{https://en.wikipedia.org/wiki/Contrast_(statistics)}.
+#'
+#' @param group_n A number, greater than 1, indicating the number of groups.
+#' @param group_ssize A [numeric][numeric()] object indicating the groups sample
+#'   sizes.
+#' @param group_sratio A [numeric][numeric()] object indicating the groups
+#'   sample ratios.
+#' @param group_amean A [numeric][numeric()] object indicating the adjusted
+#'   group means.
+#' @param var A number indicating the variance.
+#' @param cov_n A number, greater than 0, indicating the number of covariates.
+#' @param alpha (optional) a number, from `0` to `1`, indicating the designated
+#'   significant level (\eqn{\alpha}{alpha}) (default: `0.05`).
+#' @param power (optional) a number, between 0 and 1, indicating the nominal
+#'   power (default: `0.8`).
+#' @param contrast (optional) a [matrix][matrix()] object with the contrast
+#' coefficients. See the Details section to learn more (default: `NULL`).
+#'
+#' @return A [list][list()] object with the following elements:
+#'
+#' * `group_n`: a number indicating the number of groups.
+#' * `cov_n`: a number indicating the number of covariates.
+#' * `alpha`: a number indicating the designated significant level
+#' (\eqn{\alpha}{alpha}) used.
+#' * `power`: a number indicating the nominal power used (only for
+#' `ancova_muhtnp()`).
+#' * `lgamsq`: a [matrix][matrix()] object indicating `?`.
+#' * `ssize_group`: a [numeric][numeric()] object indicating the sample size for
+#' each group.
+#' * `ssize_total`: a number indicating the total sample size.
+#' * `epower`: a number indicating the estimated statistical power for the
+#' sample size (\eqn{1 - \beta}).
+#'
+#' @template references_a
+#' @family power analysis functions
+#' @export
+#'
+#' @examples
+#' ancova_muhtpo(group_n = 3, group_ssize = c(10, 10, 10),
+#'               group_amean = c(7.5366, 11.9849, 13.9785),
+#'               var = 29.0898, cov_n = 1, alpha = 0.05, contrast = NULL)
+#'
+#' ancova_muhtnp(group_n = 3, group_sratio = c(1, 1, 1),
+#'               group_amean = c(7.5366, 11.9849, 13.9785),
+#'               var = 29.0898, cov_n = 1, alpha = 0.05, power = 0.8,
+#'               contrast = NULL)
+ancova_muhtpo <- function(group_n, group_ssize, group_amean, var, cov_n,
+                          alpha = 0.05, contrast = NULL) {
+  checkmate::assert_int(group_n, lower = 2)
+  checkmate::assert_numeric(group_ssize, len = group_n)
+  checkmate::assert_numeric(group_amean, len = group_n)
+  checkmate::assert_number(var)
+  checkmate::assert_int(cov_n, lower = 1)
+  checkmate::assert_number(alpha, lower = 0, upper = 1)
+  checkmate::assert_matrix(contrast, max.cols = group_n, null.ok = TRUE)
+
+  if (is.null(contrast)) {
+    contrast <- cbind(matrix(rep(1, group_n - 1),
+                             group_n - 1, 1), - diag(group_n - 1))
+  }
+
+  checkmate::assert_true(all(rowSums(contrast) == 0))
+
+  numint <- 2000
+  dd <- 1e-5
+  coevec <- c(1, rep(c(4, 2), numint / 2 - 1), 4, 1)
+  bl <- dd
+  bu <- 1 - dd
+  intl <- (bu - bl) / numint
+  bvec <- bl + intl * (0:numint)
+  cmu <- contrast %*% matrix(group_amean, group_n, 1)
+  df1 <- nrow(contrast)
+  ssize_total <- sum(group_ssize)
+  qmat <- diag(ssize_total / group_ssize)
+  lgamsq <- t(cmu) %*% solve(contrast %*% qmat %*% t(contrast)) %*% cmu / var
+
+  epowerf <- function() {
+    ssize_total <- sum(group_ssize)
+    df2 <- ssize_total - group_n - cov_n
+    dfx <- df2 + 1
+    b <- cov_n / dfx
+    fcrit <- stats::qf(1 - alpha, df1, df2)
+
+    if (cov_n == 1) {
+      tl <- stats::qt(dd, dfx)
+      tu <- stats::qt(1 - dd, dfx)
+      intl <- (tu - tl) / numint
+      tvec <- tl + intl * (0:numint)
+      wtpdf <- (intl / 3) * coevec * stats::dt(tvec, dfx)
+
+      epower <- sum(wtpdf * stats::pf( # nolint
+        fcrit, df1, df2, ssize_total * c(lgamsq) / (1 + b * tvec^2),
+        lower.tail = FALSE)
+      )
+    } else {
+      wbpdf <- (intl / 3) * coevec * stats::dbeta(bvec, dfx / 2,
+                                                  cov_n / 2)
+
+      epower <- sum(wbpdf * stats::pf(
+        fcrit, df1, df2, ssize_total * lgamsq * bvec,
+        lower.tail = FALSE)
+      )
+    }
+  }
+
+  epower <- epowerf()
+
+  list(group_n = group_n, cov_n = cov_n, alpha = alpha, lgamsq = lgamsq,
+       ssize_group = group_ssize, ssize_total = ssize_total, epower = epower)
+}
+
+#' @rdname ancova_muhtpo
+#' @export
+ancova_muhtnp <- function(group_n, group_sratio, group_amean, var, cov_n,
+                          alpha = 0.05, power = 0.8, contrast = NULL) {
+  checkmate::assert_int(group_n, lower = 2)
+  checkmate::assert_numeric(group_sratio, len = group_n)
+  checkmate::assert_numeric(group_amean, len = group_n)
+  checkmate::assert_number(var)
+  checkmate::assert_int(cov_n, lower = 1)
+  checkmate::assert_number(alpha, lower = 0, upper = 1)
+  checkmate::assert_number(power, lower = 0, upper = 1)
+  checkmate::assert_matrix(contrast, max.cols = group_n, null.ok = TRUE)
+
+  if (is.null(contrast)) {
+    contrast <- cbind(matrix(rep(1, group_n - 1),
+                             group_n - 1, 1), - diag(group_n - 1))
+  }
+
+  checkmate::assert_true(all(rowSums(contrast) == 0))
+
+  numint <- 2000
+  dd <- 1e-5
+  coevec <- c(1, rep(c(4, 2), numint / 2 - 1), 4, 1)
+  bl <- dd
+  bu <- 1 - dd
+  intl <- (bu - bl) / numint
+  bvec <- bl + intl * (0:numint)
+  cmu <- contrast %*% matrix(group_amean, group_n, 1)
+  df1 <- nrow(contrast)
+  qmat <- diag(sum(group_sratio) / group_sratio)
+  lgamsq <- t(cmu) %*% solve(contrast %*% qmat %*% t(contrast)) %*%
+    cmu / var
+
+  epowerf <-  function() {
+    ssize_total <- sum(ssize_group)
+    df2 <- ssize_total - group_n - cov_n
+    dfx <- df2 + 1
+    b <- cov_n / dfx
+    fcrit <- stats::qf(1 - alpha, df1, df2)
+
+    if (cov_n == 1) {
+      tl <- stats::qt(dd, dfx)
+      tu <- stats::qt(1 - dd, dfx)
+      intl <- (tu - tl) / numint
+      tvec <- tl + intl * (0:numint)
+      wtpdf <- (intl / 3) * coevec * stats::dt(tvec, dfx)
+      ncp <- ssize_total * c(lgamsq) / (1 + b * tvec^2)
+
+      epower <- sum(wtpdf * stats::pf( # nolint
+        fcrit, df1, df2, ncp, lower.tail = FALSE)
+      )
+    } else {
+      wbpdf <- (intl / 3) * coevec * stats::dbeta(bvec, dfx / 2,
+                                                  cov_n / 2)
+      epower <- sum(wbpdf * stats::pf(
+        fcrit, df1, df2, ssize_total * lgamsq * bvec,
+        lower.tail = FALSE)
+      )
+    }
+  }
+
+  n <- 5
+  epower <- 0
+
+  while (epower < power && n < 1000) {
+    n <- n + 1
+    ssize_group <- n * group_sratio
+    epower <- epowerf()
+  }
+
+  ssize_group < -n * group_sratio
+  ssize_total <- sum(ssize_group)
+
+  list(group_n = group_n, cov_n = cov_n, alpha = alpha, power = power,
+       lgamsq = lgamsq, ssize_group = ssize_group, ssize_total = ssize_total,
+       epower = epower)
+}
+```
+
+#### WASO
+
+```{r}
+group_sratio <- c(
+  n_1_waso / n_total_waso, 
+  n_2_waso / n_total_waso, 
+  n_3_waso / n_total_waso
+)
+
+group_amean <- c(mean_1_adj_waso, mean_2_adj_waso, mean_3_adj_waso)
+
+sd_pooled <- 
+  (c(n_1_waso, n_2_waso, n_3_waso) - 1) %>%
+  `*`(c(sd_1_waso, sd_2_waso, sd_3_waso)^2) |>
+  sum() %>% 
+  `/`(sum((c(n_1_waso, n_2_waso, n_3_waso) - 1))) |>
+  sqrt()
+
+var_pooled <- sd_pooled^2
+
+ancova_muhtnp(
+  group_n = k, 
+  group_sratio = group_sratio, 
+  group_amean = group_amean, 
+  var = var_pooled, 
+  cov_n = 1, 
+  alpha = alpha, 
+  power = power, 
+  contrast = NULL
+)
+```
+
+#### TST
+
+```{r}
+group_sratio <- c(
+  n_1_tst / n_total_tst, 
+  n_2_tst / n_total_tst, 
+  n_3_tst / n_total_tst
+)
+
+group_amean <- c(mean_1_adj_tst, mean_2_adj_tst, mean_3_adj_tst)
+
+sd_pooled <- 
+  (c(n_1_tst, n_2_tst, n_3_tst) - 1) %>%
+  `*`(c(sd_1_tst, sd_2_tst, sd_3_tst)^2) |>
+  sum() %>% 
+  `/`(sum((c(n_1_tst, n_2_tst, n_3_tst) - 1))) |>
+  sqrt()
+
+var_pooled <- sd_pooled^2
+
+ancova_muhtnp(
+  group_n = k, 
+  group_sratio = group_sratio, 
+  group_amean = group_amean, 
+  var = var_pooled, 
+  cov_n = 1, 
+  alpha = alpha, 
+  power = power, 
+  contrast = NULL
+)
+```
+
+## References {.unnumbered}
+
+::: {#refs}
+:::

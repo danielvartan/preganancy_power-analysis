@@ -1,0 +1,56 @@
+# # Quarto commands (see <https://quarto.org/docs/websites/>)
+#
+# quarto render
+
+editor: source
+
+execute:
+  cache: false
+  freeze: false
+
+project:
+  type: website
+  output-dir: docs
+
+title: "Sample size estimation"
+author: "Daniel Vartanian"
+  # name: "Daniel Vartanian"
+  # orcid: 0000-0001-7782-759X
+  # url: https://linktr.ee/danielvartan
+  # email: danvartan@gmail.com
+  # corresponding: true
+  # affiliation:
+  #   - name: University of São Paulo
+  #   - Country: Brazil
+  #   - url: https://www.usp.br
+keyword: >
+  sample size. power analysis. pregnancy. sleep. chronobiology.
+date: today
+date-format: "YYYY-MM-DD"
+
+website:
+  open-graph: true
+  repo-url: https://github.com/danielvartan/pregnancy_sample-size
+  site-url: https://danielvartan.github.io/pregnancy_sample-size/
+  issue-url: https://github.com/danielvartan/pregnancy_sample-size/issues/
+  repo-branch: main
+  repo-actions: [edit, issue]
+  search: false
+  navbar:
+    title: false
+    background: dark
+    left:
+      - icon: github
+        href: https://github.com/danielvartan/pregnancy_sample-size
+        aria-label: GitHub
+
+format:
+  html:
+    language: en-us
+    code-fold: show
+    code-line-numbers: false
+    tbl-cap-location: top
+    csl: english-apa-author-date.csl
+
+google-scholar: false
+bibliography: references.bib
