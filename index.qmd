@@ -16,19 +16,43 @@ source(here::here("R/quarto-setup.R"))
 
 ## Overview
 
-The aim of this analysis is to estimate the sample size for a study on the effects of sleep disruption and sleep duration on labor duration (the `pregnancy` study), with the goal of replicating the findings of @lee2004.
+The aim of this analysis is to estimate the sample size for a study on the effects of sleep disruption and sleep duration on labor duration (the `pregnancy` project), with the goal of replicating the findings of @lee2004.
 
 ## Effect size estimation (Cohen's f)
 
-See @cohen1988, @frey2022, and @maxwell2018 to learn more.
+See @cohen1988 and @maxwell2018 to learn more.
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+
+library(checkmate)
+library(cli)
+library(dplyr)
+library(stats)
+library(pwr)
+```
+
+```{r}
+# See Maxwell et al. (2018, p. 150)
+f_unb <- function(k, n_total, f_test) {
+  checkmate::assert_int(k, lower = 2)
+  checkmate::assert_int(n_total, lower = 2)
+  checkmate::assert_number(f_test)
+  
+  ((k - 1) / n_total) %>%
+  `*`(((n_total - k - 2) / (n_total - k)) * (f_test - 1)) |> 
+  sqrt()
+}
+```
 
 ### Parameters
 
 The parameters for the effect size were extracted from @lee2004, as shown below.
 
-> Controlling for infant birth weight, ANCOVA indicated that the degree of prenatal sleep disruption \[WASO\] had a significant effect on labor duration (F[2,125] = 6.93, P = .001). [@lee2004, pp. 2044]
+> Controlling for infant birth weight, ANCOVA indicated that the degree of prenatal sleep disruption \[WASO\] had a significant effect on labor duration ($\text{F}[2,125] = 6.93$, $\text{P} = .001$). [@lee2004, pp. 2044]
 
-> Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a signiﬁcant eﬀect on labor duration (F[2,125] = 5.54, P = .005). [@lee2004, pp. 2044]
+> Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a signiﬁcant eﬀect on labor duration ($\text{F}[2,125] = 5.54$, $\text{P} = .005$). [@lee2004, pp. 2044]
 
 > WASO = Wakefulness after sleep onset. TST = Total sleep time.
 
@@ -38,23 +62,23 @@ The parameters for the effect size were extracted from @lee2004, as shown below.
 :::
 
 ::: {#tbl-1 .g-col-10}
-|            | n  | Labor duration* (mean ± SD) |
-|------------|----|---------------------------------|
-| **WASO**   |    |                                 |
-| 15%+       | 41 | 26.0 ± 11.7†                    |
-| 10%-14.9%  | 32 | 16.3 ± 12.9                     |
-| <10%       | 58 | 18.3 ± 14.6                     |
-| **TST**    |    |                                 |
-| < 6 h      | 19 | 29.0 ± 12.5†                    |
-| 6-6.9 h    | 38 | 20.5 ± 11.3                     |
-| 7+ h       | 74 | 17.7 ± 15.6                     |
+|                  | $n$  | Labor duration$^{\ast}$ (mean $\pm$ SD) |
+|------------------|------|-----------------------------------------|
+| **WASO**         |      |                                         |
+| $15\%+$          | $41$ | $26.0 \pm 11.7^{\dagger}$               |
+| $10\%-14.9\%$    | $32$ | $16.3 \pm 12.9$                         |
+| $<10\%$          | $58$ | $18.3 \pm 14.6$                         |
+| **TST**          |      |                                         |
+| $<6 \text{h}$    | $19$ | $29.0 \pm 12.5^{\dagger}$               |
+| $6-6.9 \text{h}$ | $38$ | $20.5 \pm 11.3$                         |
+| $7+ \text{h}$    | $74$ | $17.7 \pm 15.6$                         |
 
-<p style="font-size: .9rem;color: #5a6570;">\*Adjusted for infant birth weight.</p>
-<p style="margin-top: -0.25em; font-size: .9rem;color: #5a6570;">†Significantly longer labor than the other 2 groups.</p>
+<p style="font-size: .9rem;color: #5a6570;">$^{\ast}$Adjusted for infant birth weight.</p>
+<p style="margin-top: -0.25em; font-size: .9rem;color: #5a6570;">$^{\dagger}$Significantly longer labor than the other 2 groups.</p>
 
 <p style="font-size: .9rem;color: #5a6570;text-align:center">Source: @lee2004 [pp. 2044].</p>
 
-Differences in labor duration by total sleep time and wake after sleep onset (n = 131) {.striped .hover}
+Differences in labor duration by total sleep time and wake after sleep onset ($n = 131$) {.striped .hover}
 :::
 
 ::: {.g-col-1}
@@ -65,44 +89,13 @@ Differences in labor duration by total sleep time and wake after sleep onset (n 
 ### WASO
 
 ```{r}
-#| message: FALSE
-#| warning: FALSE
-
-library(cli)
-library(dplyr)
-library(stats)
-library(pwr)
-```
-
-```{r}
-# Group 1: 15+
-n_1_waso <- 41
-mean_1_adj_waso <- 26 # Significantly longer labor than the other 2 groups.
-sd_1_waso <- 11.7
-
-# Group 2: 10%-14.9%
-n_2_waso <- 32
-mean_2_adj_waso <- 16.3
-sd_2_waso <- 12.9
-
-# Group 3: <10%
-n_3_waso <- 58
-mean_3_adj_waso <- 18.3
-sd_3_waso <- 14.6
-
-n_total_waso <- sum(n_1_waso, n_2_waso, n_3_waso)
-
 k <- 3
 num_df <- 2
 den_df <- 125
 n_total_waso <- den_df + k
 f_test <- 6.93
 
-# See Maxwell et al. (2018, p. 150)
-f_unb_waso <- 
-  ((k - 1) / n_total_waso) %>%
-  `*`(((n_total_waso - k - 2) / (n_total_waso - k)) * (f_test - 1)) |> 
-  sqrt()
+f_unb_waso <- f_unb(k, n_total_waso, f_test)
 
 f_unb_waso
 ```
@@ -110,34 +103,13 @@ f_unb_waso
 ### TST
 
 ```{r}
-# Group 1: <6 h
-n_1_tst <- 19
-mean_1_adj_tst <- 29 # Significantly longer labor than the other 2 groups.
-sd_1_tst <- 12.5
-
-# Group 2: 6-6.9 h
-n_2_tst <- 38
-mean_2_adj_tst <- 20.5
-sd_2_tst <- 11.3
-
-# Group 3: 7+ h
-n_3_tst <- 74
-mean_3_adj_tst <- 17.7
-sd_3_tst <- 15.6
-
-n_total_tst <- sum(n_1_tst, n_2_tst, n_3_tst)
-
 k <- 3
 num_df <- 2
 den_df <- 125
 n_total_tst <- den_df + k
 f_test <- 5.54
 
-# See Maxwell et al. (2018, p. 150)
-f_unb_tst <- 
-  ((k - 1) / n_total_tst) %>%
-  `*`(((n_total_tst - k - 2) / (n_total_tst - k)) * (f_test - 1)) |> 
-  sqrt()
+f_unb_tst <- f_unb(k, n_total_tst, f_test)
 
 f_unb_tst
 ```
@@ -193,7 +165,7 @@ test
 ```
 
 ```{r}
-pwr::plot.power.htest(test, type = "b", main = "WASO")
+pwr::plot.power.htest(test, type = "b", main = "TST")
 ```
 
 ```{r}
@@ -249,14 +221,12 @@ See @shieh2020 to learn more.
 #'
 #' @description
 #'
-#' `ancova_muhtpo()` compute the __power__ and  `ancova_muhtnp()` the
+#' `ancova_muhtpo()` computes the __power__ and  `ancova_muhtnp()` the
 #' __sample size__ for a generalized linear hypothesis tests of treatment
 #' effects.
 #'
 #' These functions were adapted from "Program C" and "Program D" algorithms
 #' found in Shieh (2020) supplementary material.
-#'
-#' See Cohen (1988) to learn more about power analysis .
 #'
 #' @details
 #'
@@ -309,9 +279,10 @@ See @shieh2020 to learn more.
 #' * `epower`: a number indicating the estimated statistical power for the
 #' sample size (\eqn{1 - \beta}).
 #'
-#' @template references_a
-#' @family power analysis functions
-#' @export
+#' @references
+#' 
+#' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs.
+#' _Psychometrika_, _85_(1), 101–120. \doi{10.1007/s11336-019-09692-3}
 #'
 #' @examples
 #' ancova_muhtpo(group_n = 3, group_ssize = c(10, 10, 10),
@@ -387,8 +358,6 @@ ancova_muhtpo <- function(group_n, group_ssize, group_amean, var, cov_n,
        ssize_group = group_ssize, ssize_total = ssize_total, epower = epower)
 }
 
-#' @rdname ancova_muhtpo
-#' @export
 ancova_muhtnp <- function(group_n, group_sratio, group_amean, var, cov_n,
                           alpha = 0.05, power = 0.8, contrast = NULL) {
   checkmate::assert_int(group_n, lower = 2)
@@ -469,6 +438,21 @@ ancova_muhtnp <- function(group_n, group_sratio, group_amean, var, cov_n,
 #### WASO
 
 ```{r}
+# Group 1: 15+
+n_1_waso <- 41
+mean_1_adj_waso <- 26
+sd_1_waso <- 11.7
+
+# Group 2: 10%-14.9%
+n_2_waso <- 32
+mean_2_adj_waso <- 16.3
+sd_2_waso <- 12.9
+
+# Group 3: <10%
+n_3_waso <- 58
+mean_3_adj_waso <- 18.3
+sd_3_waso <- 14.6
+
 group_sratio <- c(
   n_1_waso / n_total_waso, 
   n_2_waso / n_total_waso, 
@@ -501,6 +485,21 @@ ancova_muhtnp(
 #### TST
 
 ```{r}
+# Group 1: <6 h
+n_1_tst <- 19
+mean_1_adj_tst <- 29
+sd_1_tst <- 12.5
+
+# Group 2: 6-6.9 h
+n_2_tst <- 38
+mean_2_adj_tst <- 20.5
+sd_2_tst <- 11.3
+
+# Group 3: 7+ h
+n_3_tst <- 74
+mean_3_adj_tst <- 17.7
+sd_3_tst <- 15.6
+
 group_sratio <- c(
   n_1_tst / n_total_tst, 
   n_2_tst / n_total_tst, 

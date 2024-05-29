@@ -30,9 +30,9 @@ date-format: "YYYY-MM-DD"
 
 website:
   open-graph: true
-  repo-url: https://github.com/danielvartan/pregnancy_sample-size
-  site-url: https://danielvartan.github.io/pregnancy_sample-size/
-  issue-url: https://github.com/danielvartan/pregnancy_sample-size/issues/
+  repo-url: https://github.com/danielvartan/sample-size
+  site-url: https://danielvartan.github.io/sample-size/
+  issue-url: https://github.com/danielvartan/sample-size/issues/
   repo-branch: main
   repo-actions: [edit, issue]
   search: false
@@ -41,7 +41,7 @@ website:
     background: dark
     left:
       - icon: github
-        href: https://github.com/danielvartan/pregnancy_sample-size
+        href: https://github.com/danielvartan/sample-size
         aria-label: GitHub
 
 format:
