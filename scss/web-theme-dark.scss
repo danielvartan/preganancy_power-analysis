@@ -1,0 +1,24 @@
+/*-- scss:defaults --*/
+
+// See <https://quarto.org/docs/output-formats/html-themes.htm>.
+
+// Base document colors
+
+$body-bg: #181818;
+$body-color: white;
+$primary: #1b589d !default;
+
+// Code
+
+$code-block-bg-alpha: -.8;
+
+/*-- scss:rules --*/
+
+code {
+  color: #373a3c;
+}
+
+code a:any-link {
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+}

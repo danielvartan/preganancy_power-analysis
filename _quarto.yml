@@ -1,7 +1,3 @@
-# # Quarto commands (see <https://quarto.org/docs/websites/>)
-#
-# quarto render
-
 editor: source
 
 execute:
@@ -11,6 +7,7 @@ execute:
 project:
   type: website
   output-dir: docs
+  render: [index.qmd]
 
 title: "Sample size estimation"
 author: "Daniel Vartanian"
@@ -29,7 +26,6 @@ date: today
 date-format: "YYYY-MM-DD"
 
 website:
-  open-graph: true
   repo-url: https://github.com/danielvartan/sample-size
   site-url: https://danielvartan.github.io/sample-size/
   issue-url: https://github.com/danielvartan/sample-size/issues/
@@ -46,11 +42,14 @@ website:
 
 format:
   html:
+    locale: en
     language: en-us
     code-fold: show
-    code-line-numbers: false
+    code-link: true
     tbl-cap-location: top
+    callout-appearance: simple
     csl: english-apa-author-date.csl
+    theme: [cosmo, scss/web-theme-light.scss]
 
 google-scholar: false
 bibliography: references.bib

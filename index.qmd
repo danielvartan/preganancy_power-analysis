@@ -52,7 +52,7 @@ The parameters for the effect size were extracted from @lee2004, as shown below.
 
 > Controlling for infant birth weight, ANCOVA indicated that the degree of prenatal sleep disruption \[WASO\] had a significant effect on labor duration ($\text{F}[2,125] = 6.93$, $\text{P} = .001$). [@lee2004, pp. 2044]
 
-> Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a signiﬁcant eﬀect on labor duration ($\text{F}[2,125] = 5.54$, $\text{P} = .005$). [@lee2004, pp. 2044]
+> Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a significant effect on labor duration ($\text{F}[2,125] = 5.54$, $\text{P} = .005$). [@lee2004, pp. 2044]
 
 > WASO = Wakefulness after sleep onset. TST = Total sleep time.
 
@@ -73,10 +73,10 @@ The parameters for the effect size were extracted from @lee2004, as shown below.
 | $6-6.9 \text{h}$ | $38$ | $20.5 \pm 11.3$                         |
 | $7+ \text{h}$    | $74$ | $17.7 \pm 15.6$                         |
 
-<p style="font-size: .9rem;color: #5a6570;">$^{\ast}$Adjusted for infant birth weight.</p>
-<p style="margin-top: -0.25em; font-size: .9rem;color: #5a6570;">$^{\dagger}$Significantly longer labor than the other 2 groups.</p>
+$^{\ast}$Adjusted for infant birth weight.
+$^{\dagger}$Significantly longer labor than the other 2 groups.
 
-<p style="font-size: .9rem;color: #5a6570;text-align:center">Source: @lee2004 [pp. 2044].</p>
+Source: @lee2004 [pp. 2044].
 
 Differences in labor duration by total sleep time and wake after sleep onset ($n = 131$) {.striped .hover}
 :::
@@ -217,6 +217,8 @@ Output:	Noncentrality parameter λ	=	9.9119529
 See @shieh2020 to learn more.
 
 ```{r}
+#| code-fold: true
+
 #' Compute a power analysis and sample size for an ANCOVA design
 #'
 #' @description

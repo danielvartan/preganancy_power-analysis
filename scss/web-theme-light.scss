@@ -1,0 +1,16 @@
+/*-- scss:defaults --*/
+
+// See <https://quarto.org/docs/output-formats/html-themes.htm>.
+
+$primary: #373A3C !default;
+
+/*-- scss:rules --*/
+
+a {
+  color: blue;
+}
+
+code a:any-link {
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+}

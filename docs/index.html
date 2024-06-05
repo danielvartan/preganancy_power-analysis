@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.487">
-
+<meta name="generator" content="quarto-1.5.40">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Daniel Vartanian">
-<meta name="dcterms.date" content="2024-05-29">
-
+<meta name="dcterms.date" content="2024-06-05">
 <title>Sample size estimation</title>
 <style>
 code{white-space: pre-wrap;}
@@ -35,7 +32,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -78,7 +75,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -90,8 +86,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -100,52 +95,63 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<meta property="og:title" content="Sample size estimation">
-<meta property="og:description" content="">
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/danielvartan/sample-size"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Sample size estimation</h1>
 </div>
 
@@ -163,7 +169,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-05-29</p>
+      <p class="date">2024-06-05</p>
     </div>
   </div>
   
@@ -172,51 +178,39 @@ div.csl-indent {
   
 
 
-</header>
-
-
-<!-- badges: start -->
-<p><a href="https://www.repostatus.org/#inactive"><img src="https://www.repostatus.org/badges/latest/inactive.svg" class="img-fluid" alt="Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows."></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/license-MIT-green.png" class="img-fluid" alt="License: MIT"></a> <!-- badges: end --></p>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+</header><!-- badges: start --><p><a href="https://www.repostatus.org/#inactive"><img src="https://www.repostatus.org/badges/latest/inactive.svg" class="img-fluid" alt="Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows."></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/license-MIT-green.png" class="img-fluid" alt="License: MIT"></a> <!-- badges: end --></p>
+<section id="overview" class="level2"><h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>The aim of this analysis is to estimate the sample size for a study on the effects of sleep disruption and sleep duration on labor duration (the <code>pregnancy</code> project), with the goal of replicating the findings of <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref-lee2004" role="doc-biblioref">2004</a>)</span>.</p>
-</section>
-<section id="effect-size-estimation-cohens-f" class="level2">
-<h2 class="anchored" data-anchor-id="effect-size-estimation-cohens-f">Effect size estimation (Cohen’s f)</h2>
+</section><section id="effect-size-estimation-cohens-f" class="level2"><h2 class="anchored" data-anchor-id="effect-size-estimation-cohens-f">Effect size estimation (Cohen’s f)</h2>
 <p>See <span class="citation" data-cites="cohen1988">Cohen (<a href="#ref-cohen1988" role="doc-biblioref">1988</a>)</span> and <span class="citation" data-cites="maxwell2018">Maxwell et al. (<a href="#ref-maxwell2018" role="doc-biblioref">2018</a>)</span> to learn more.</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(checkmate)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cli)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stats)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mllg.github.io/checkmate/">checkmate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cli.r-lib.org">cli</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See Maxwell et al. (2018, p. 150)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>f_unb <span class="ot">&lt;-</span> <span class="cf">function</span>(k, n_total, f_test) {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(k, <span class="at">lower =</span> <span class="dv">2</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(n_total, <span class="at">lower =</span> <span class="dv">2</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(f_test)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ((k <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> n_total) <span class="sc">%&gt;%</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">*</span><span class="st">`</span>(((n_total <span class="sc">-</span> k <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">/</span> (n_total <span class="sc">-</span> k)) <span class="sc">*</span> (f_test <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># See Maxwell et al. (2018, p. 150)</span></span>
+<span><span class="va">f_unb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span>, <span class="va">n_total</span>, <span class="va">f_test</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">k</span>, lower <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">n_total</span>, lower <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">f_test</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="op">(</span><span class="op">(</span><span class="va">k</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">n_total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`*`</span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">n_total</span> <span class="op">-</span> <span class="va">k</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">n_total</span> <span class="op">-</span> <span class="va">k</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">f_test</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="parameters" class="level3">
-<h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
+<section id="parameters" class="level3"><h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
 <p>The parameters for the effect size were extracted from <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref-lee2004" role="doc-biblioref">2004</a>)</span>, as shown below.</p>
 <blockquote class="blockquote">
 <p>Controlling for infant birth weight, ANCOVA indicated that the degree of prenatal sleep disruption [WASO] had a significant effect on labor duration (<span class="math inline">\(\text{F}[2,125] = 6.93\)</span>, <span class="math inline">\(\text{P} = .001\)</span>). <span class="citation" data-cites="lee2004">(<a href="#ref-lee2004" role="doc-biblioref">Lee &amp; Gay, 2004, p. 2044</a>)</span></p>
 </blockquote>
 <blockquote class="blockquote">
-<p>Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a signiﬁcant eﬀect on labor duration (<span class="math inline">\(\text{F}[2,125] = 5.54\)</span>, <span class="math inline">\(\text{P} = .005\)</span>). <span class="citation" data-cites="lee2004">(<a href="#ref-lee2004" role="doc-biblioref">Lee &amp; Gay, 2004, p. 2044</a>)</span></p>
+<p>Controlling for infant birth weight, ANCOVA indicated that prenatal sleep quantity (TST) also had a significant effect on labor duration (<span class="math inline">\(\text{F}[2,125] = 5.54\)</span>, <span class="math inline">\(\text{P} = .005\)</span>). <span class="citation" data-cites="lee2004">(<a href="#ref-lee2004" role="doc-biblioref">Lee &amp; Gay, 2004, p. 2044</a>)</span></p>
 </blockquote>
 <blockquote class="blockquote">
 <p>WASO = Wakefulness after sleep onset. TST = Total sleep time.</p>
@@ -225,20 +219,16 @@ div.csl-indent {
 <div class="g-col-1">
 
 </div>
-<div id="tbl-1" class="g-col-10 striped hover anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="tbl-1" class="g-col-10 striped hover quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Differences in labor duration by total sleep time and wake after sleep onset (<span class="math inline">\(n = 131\)</span>)
-</figcaption>
-<div aria-describedby="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="g-col-10 table-striped table-hover table">
-<thead>
-<tr class="header">
+</figcaption><div aria-describedby="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="g-col-10 table-striped table-hover caption-top table">
+<thead><tr class="header">
 <th></th>
 <th><span class="math inline">\(n\)</span></th>
 <th>Labor duration<span class="math inline">\(^{\ast}\)</span> (mean <span class="math inline">\(\pm\)</span> SD)</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td><strong>WASO</strong></td>
@@ -282,15 +272,8 @@ Table&nbsp;1: Differences in labor duration by total sleep time and wake after s
 </tr>
 </tbody>
 </table>
-<p style="font-size: .9rem;color: #5a6570;">
-<span class="math inline">\(^{\ast}\)</span>Adjusted for infant birth weight.
-</p>
-<p style="margin-top: -0.25em; font-size: .9rem;color: #5a6570;">
-<span class="math inline">\(^{\dagger}\)</span>Significantly longer labor than the other 2 groups.
-</p>
-<p style="font-size: .9rem;color: #5a6570;text-align:center">
-Source: <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref-lee2004" role="doc-biblioref">2004, p. 2044</a>)</span>.
-</p>
+<p><span class="math inline">\(^{\ast}\)</span>Adjusted for infant birth weight. <span class="math inline">\(^{\dagger}\)</span>Significantly longer labor than the other 2 groups.</p>
+<p>Source: <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref-lee2004" role="doc-biblioref">2004, p. 2044</a>)</span>.</p>
 </div>
 </figure>
 </div>
@@ -298,157 +281,124 @@ Source: <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref
 
 </div>
 </div>
-</section>
-<section id="waso" class="level3">
-<h3 class="anchored" data-anchor-id="waso">WASO</h3>
+</section><section id="waso" class="level3"><h3 class="anchored" data-anchor-id="waso">WASO</h3>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>num_df <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>den_df <span class="ot">&lt;-</span> <span class="dv">125</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>n_total_waso <span class="ot">&lt;-</span> den_df <span class="sc">+</span> k</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>f_test <span class="ot">&lt;-</span> <span class="fl">6.93</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>f_unb_waso <span class="ot">&lt;-</span> <span class="fu">f_unb</span>(k, n_total_waso, f_test)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>f_unb_waso</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3019499</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span><span class="va">num_df</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">den_df</span> <span class="op">&lt;-</span> <span class="fl">125</span></span>
+<span><span class="va">n_total_waso</span> <span class="op">&lt;-</span> <span class="va">den_df</span> <span class="op">+</span> <span class="va">k</span></span>
+<span><span class="va">f_test</span> <span class="op">&lt;-</span> <span class="fl">6.93</span></span>
+<span></span>
+<span><span class="va">f_unb_waso</span> <span class="op">&lt;-</span> <span class="fu">f_unb</span><span class="op">(</span><span class="va">k</span>, <span class="va">n_total_waso</span>, <span class="va">f_test</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f_unb_waso</span></span>
+<span><span class="co">#&gt; [1] 0.3019499</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="tst" class="level3">
-<h3 class="anchored" data-anchor-id="tst">TST</h3>
+</section><section id="tst" class="level3"><h3 class="anchored" data-anchor-id="tst">TST</h3>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>num_df <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>den_df <span class="ot">&lt;-</span> <span class="dv">125</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>n_total_tst <span class="ot">&lt;-</span> den_df <span class="sc">+</span> k</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>f_test <span class="ot">&lt;-</span> <span class="fl">5.54</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>f_unb_tst <span class="ot">&lt;-</span> <span class="fu">f_unb</span>(k, n_total_tst, f_test)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>f_unb_tst</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2642016</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span><span class="va">num_df</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">den_df</span> <span class="op">&lt;-</span> <span class="fl">125</span></span>
+<span><span class="va">n_total_tst</span> <span class="op">&lt;-</span> <span class="va">den_df</span> <span class="op">+</span> <span class="va">k</span></span>
+<span><span class="va">f_test</span> <span class="op">&lt;-</span> <span class="fl">5.54</span></span>
+<span></span>
+<span><span class="va">f_unb_tst</span> <span class="op">&lt;-</span> <span class="fu">f_unb</span><span class="op">(</span><span class="va">k</span>, <span class="va">n_total_tst</span>, <span class="va">f_test</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f_unb_tst</span></span>
+<span><span class="co">#&gt; [1] 0.2642016</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-</section>
-<section id="sample-size-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="sample-size-estimation">Sample size estimation</h2>
-<section id="parameters-1" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-1">Parameters</h3>
+</section></section><section id="sample-size-estimation" class="level2"><h2 class="anchored" data-anchor-id="sample-size-estimation">Sample size estimation</h2>
+<section id="parameters-1" class="level3"><h3 class="anchored" data-anchor-id="parameters-1">Parameters</h3>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># Number of groups</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fl">0.8</span></span>
+<span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># Number of groups</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="using-the-pwr-r-package" class="level3">
-<h3 class="anchored" data-anchor-id="using-the-pwr-r-package">Using the <a href="https://github.com/heliosdrm/pwr"><code>pwr</code></a> R package</h3>
+</section><section id="using-the-pwr-r-package" class="level3"><h3 class="anchored" data-anchor-id="using-the-pwr-r-package">Using the <a href="https://github.com/heliosdrm/pwr"><code>pwr</code></a> R package</h3>
 <p>It’s important to note that, according to <span class="citation" data-cites="cohen1988">Cohen (<a href="#ref-cohen1988" role="doc-biblioref">1988, p. 403</a>)</span>:</p>
 <blockquote class="blockquote">
 <p>[…] sample size estimation in the analysis of covariance proceeds in exactly the same way as in analogous analysis of variance designs.</p>
 </blockquote>
-<section id="waso-1" class="level4">
-<h4 class="anchored" data-anchor-id="waso-1">WASO</h4>
+<section id="waso-1" class="level4"><h4 class="anchored" data-anchor-id="waso-1">WASO</h4>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> pwr<span class="sc">::</span><span class="fu">pwr.anova.test</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> k, </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f_unb_waso, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sig.level =</span> alpha, </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> power</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>test</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Balanced one-way analysis of variance power calculation </span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               k = 3</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               n = 36.24212</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               f = 0.3019499</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sig.level = 0.05</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           power = 0.8</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span><span class="al">NOTE</span><span class="co">: n is number in each group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html">pwr.anova.test</a></span><span class="op">(</span></span>
+<span>  k <span class="op">=</span> <span class="va">k</span>, </span>
+<span>  f <span class="op">=</span> <span class="va">f_unb_waso</span>, </span>
+<span>  sig.level <span class="op">=</span> <span class="va">alpha</span>, </span>
+<span>  power <span class="op">=</span> <span class="va">power</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      Balanced one-way analysis of variance power calculation </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               k = 3</span></span>
+<span><span class="co">#&gt;               n = 36.24212</span></span>
+<span><span class="co">#&gt;               f = 0.3019499</span></span>
+<span><span class="co">#&gt;       sig.level = 0.05</span></span>
+<span><span class="co">#&gt;           power = 0.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; NOTE: n is number in each group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pwr<span class="sc">::</span><span class="fu">plot.power.htest</span>(test, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">main =</span> <span class="st">"WASO"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/plot.power.htest.html">plot.power.htest</a></span><span class="op">(</span><span class="va">test</span>, type <span class="op">=</span> <span class="st">"b"</span>, main <span class="op">=</span> <span class="st">"WASO"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-</div>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ceiling</span>(test<span class="sc">$</span>n <span class="sc">*</span> k) <span class="co"># Total sample size</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 109</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="tst-1" class="level4">
-<h4 class="anchored" data-anchor-id="tst-1">TST</h4>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> pwr<span class="sc">::</span><span class="fu">pwr.anova.test</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> k, </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f_unb_tst, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sig.level =</span> alpha, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> power</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>test</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Balanced one-way analysis of variance power calculation </span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               k = 3</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               n = 47.02238</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               f = 0.2642016</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sig.level = 0.05</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           power = 0.8</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span><span class="al">NOTE</span><span class="co">: n is number in each group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pwr<span class="sc">::</span><span class="fu">plot.power.htest</span>(test, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">main =</span> <span class="st">"TST"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ceiling</span>(test<span class="sc">$</span>n <span class="sc">*</span> k) <span class="co"># Total sample size</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 142</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">n</span> <span class="op">*</span> <span class="va">k</span><span class="op">)</span> <span class="co"># Total sample size</span></span>
+<span><span class="co">#&gt; [1] 109</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-</section>
-<section id="using-the-gpower-software" class="level3">
-<h3 class="anchored" data-anchor-id="using-the-gpower-software">Using the G*Power software</h3>
+</section><section id="tst-1" class="level4"><h4 class="anchored" data-anchor-id="tst-1">TST</h4>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html">pwr.anova.test</a></span><span class="op">(</span></span>
+<span>  k <span class="op">=</span> <span class="va">k</span>, </span>
+<span>  f <span class="op">=</span> <span class="va">f_unb_tst</span>, </span>
+<span>  sig.level <span class="op">=</span> <span class="va">alpha</span>, </span>
+<span>  power <span class="op">=</span> <span class="va">power</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      Balanced one-way analysis of variance power calculation </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               k = 3</span></span>
+<span><span class="co">#&gt;               n = 47.02238</span></span>
+<span><span class="co">#&gt;               f = 0.2642016</span></span>
+<span><span class="co">#&gt;       sig.level = 0.05</span></span>
+<span><span class="co">#&gt;           power = 0.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; NOTE: n is number in each group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/plot.power.htest.html">plot.power.htest</a></span><span class="op">(</span><span class="va">test</span>, type <span class="op">=</span> <span class="st">"b"</span>, main <span class="op">=</span> <span class="st">"TST"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">n</span> <span class="op">*</span> <span class="va">k</span><span class="op">)</span> <span class="co"># Total sample size</span></span>
+<span><span class="co">#&gt; [1] 142</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="using-the-gpower-software" class="level3"><h3 class="anchored" data-anchor-id="using-the-gpower-software">Using the G*Power software</h3>
 <p>See <span class="citation" data-cites="faul2007">Faul et al. (<a href="#ref-faul2007" role="doc-biblioref">2007</a>)</span> to learn more.</p>
-<section id="waso-2" class="level4">
-<h4 class="anchored" data-anchor-id="waso-2">WASO</h4>
+<section id="waso-2" class="level4"><h4 class="anchored" data-anchor-id="waso-2">WASO</h4>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>F tests - ANCOVA: Fixed effects, main effects and interactions</span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>F tests - ANCOVA: Fixed effects, main effects and interactions</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Analysis:   A priori: Compute required sample size </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Input:  Effect size f   =   0.3019499</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    α err prob  =   0.05</span>
@@ -463,13 +413,9 @@ Source: <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    Actual power    =   0.8009725</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="tst-2" class="level4">
-<h4 class="anchored" data-anchor-id="tst-2">TST</h4>
+</section><section id="tst-2" class="level4"><h4 class="anchored" data-anchor-id="tst-2">TST</h4>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>F tests - ANCOVA: Fixed effects, main effects and interactions</span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>F tests - ANCOVA: Fixed effects, main effects and interactions</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Analysis:   A priori: Compute required sample size </span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Input:  Effect size f   =   0.2642016</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    α err prob  =   0.05</span>
@@ -484,384 +430,368 @@ Source: <span class="citation" data-cites="lee2004">Lee &amp; Gay (<a href="#ref
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    Actual power    =   0.8027593</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-</section>
-<section id="using-shiehs-method" class="level3">
-<h3 class="anchored" data-anchor-id="using-shiehs-method">Using Shieh’s method</h3>
+</section></section><section id="using-shiehs-method" class="level3"><h3 class="anchored" data-anchor-id="using-shiehs-method">Using Shieh’s method</h3>
 <p>See <span class="citation" data-cites="shieh2020">Shieh (<a href="#ref-shieh2020" role="doc-biblioref">2020</a>)</span> to learn more.</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Compute a power analysis and sample size for an ANCOVA design</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @description</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' `ancova_muhtpo()` computes the __power__ and  `ancova_muhtnp()` the</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' __sample size__ for a generalized linear hypothesis tests of treatment</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' effects.</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' These functions were adapted from "Program C" and "Program D" algorithms</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' found in Shieh (2020) supplementary material.</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#' @details</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#' ## `contrast` parameter</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#' If `contrast = NULL`, `ancova_muhtnp()` will use the following contrast</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#' matrix:</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#' `cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))`</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">#' * Example:</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#' ```{r}</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co">#' group_n &lt;- 3</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co">#' cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co">#' ```</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="co">#' Learn more about "contrast matrices" at</span></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="co">#' \url{https://en.wikipedia.org/wiki/Contrast_(statistics)}.</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param group_n A number, greater than 1, indicating the number of groups.</span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param group_ssize A [numeric][numeric()] object indicating the groups sample</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="co">#'   sizes.</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param group_sratio A [numeric][numeric()] object indicating the groups</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="co">#'   sample ratios.</span></span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param group_amean A [numeric][numeric()] object indicating the adjusted</span></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="co">#'   group means.</span></span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param var A number indicating the variance.</span></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param cov_n A number, greater than 0, indicating the number of covariates.</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param alpha (optional) a number, from `0` to `1`, indicating the designated</span></span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="co">#'   significant level (\eqn{\alpha}{alpha}) (default: `0.05`).</span></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param power (optional) a number, between 0 and 1, indicating the nominal</span></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="co">#'   power (default: `0.8`).</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param contrast (optional) a [matrix][matrix()] object with the contrast</span></span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co">#' coefficients. See the Details section to learn more (default: `NULL`).</span></span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return A [list][list()] object with the following elements:</span></span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `group_n`: a number indicating the number of groups.</span></span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `cov_n`: a number indicating the number of covariates.</span></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `alpha`: a number indicating the designated significant level</span></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="co">#' (\eqn{\alpha}{alpha}) used.</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `power`: a number indicating the nominal power used (only for</span></span>
-<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="co">#' `ancova_muhtnp()`).</span></span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `lgamsq`: a [matrix][matrix()] object indicating `?`.</span></span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `ssize_group`: a [numeric][numeric()] object indicating the sample size for</span></span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a><span class="co">#' each group.</span></span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `ssize_total`: a number indicating the total sample size.</span></span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="co">#' * `epower`: a number indicating the estimated statistical power for the</span></span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a><span class="co">#' sample size (\eqn{1 - \beta}).</span></span>
-<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a><span class="co">#' @references</span></span>
-<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a><span class="co">#' </span></span>
-<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a><span class="co">#' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs.</span></span>
-<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a><span class="co">#' _Psychometrika_, _85_(1), 101–120. \doi{10.1007/s11336-019-09692-3}</span></span>
-<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
-<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a><span class="co">#' ancova_muhtpo(group_n = 3, group_ssize = c(10, 10, 10),</span></span>
-<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="co">#'               group_amean = c(7.5366, 11.9849, 13.9785),</span></span>
-<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a><span class="co">#'               var = 29.0898, cov_n = 1, alpha = 0.05, contrast = NULL)</span></span>
-<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a><span class="co">#' ancova_muhtnp(group_n = 3, group_sratio = c(1, 1, 1),</span></span>
-<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="co">#'               group_amean = c(7.5366, 11.9849, 13.9785),</span></span>
-<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a><span class="co">#'               var = 29.0898, cov_n = 1, alpha = 0.05, power = 0.8,</span></span>
-<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a><span class="co">#'               contrast = NULL)</span></span>
-<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>ancova_muhtpo <span class="ot">&lt;-</span> <span class="cf">function</span>(group_n, group_ssize, group_amean, var, cov_n,</span>
-<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>                          <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">contrast =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(group_n, <span class="at">lower =</span> <span class="dv">2</span>)</span>
-<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_numeric</span>(group_ssize, <span class="at">len =</span> group_n)</span>
-<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_numeric</span>(group_amean, <span class="at">len =</span> group_n)</span>
-<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(var)</span>
-<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(cov_n, <span class="at">lower =</span> <span class="dv">1</span>)</span>
-<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(alpha, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">1</span>)</span>
-<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_matrix</span>(contrast, <span class="at">max.cols =</span> group_n, <span class="at">null.ok =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(contrast)) {</span>
-<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a>    contrast <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>, group_n <span class="sc">-</span> <span class="dv">1</span>),</span>
-<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a>                             group_n <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>), <span class="sc">-</span> <span class="fu">diag</span>(group_n <span class="sc">-</span> <span class="dv">1</span>))</span>
-<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_true</span>(<span class="fu">all</span>(<span class="fu">rowSums</span>(contrast) <span class="sc">==</span> <span class="dv">0</span>))</span>
-<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>  numint <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="fl">1e-5</span></span>
-<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>  coevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>), numint <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span>), <span class="dv">4</span>, <span class="dv">1</span>)</span>
-<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>  bl <span class="ot">&lt;-</span> dd</span>
-<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>  bu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> dd</span>
-<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>  intl <span class="ot">&lt;-</span> (bu <span class="sc">-</span> bl) <span class="sc">/</span> numint</span>
-<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>  bvec <span class="ot">&lt;-</span> bl <span class="sc">+</span> intl <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>numint)</span>
-<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>  cmu <span class="ot">&lt;-</span> contrast <span class="sc">%*%</span> <span class="fu">matrix</span>(group_amean, group_n, <span class="dv">1</span>)</span>
-<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(contrast)</span>
-<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>  ssize_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(group_ssize)</span>
-<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>  qmat <span class="ot">&lt;-</span> <span class="fu">diag</span>(ssize_total <span class="sc">/</span> group_ssize)</span>
-<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>  lgamsq <span class="ot">&lt;-</span> <span class="fu">t</span>(cmu) <span class="sc">%*%</span> <span class="fu">solve</span>(contrast <span class="sc">%*%</span> qmat <span class="sc">%*%</span> <span class="fu">t</span>(contrast)) <span class="sc">%*%</span> cmu <span class="sc">/</span> var</span>
-<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>  epowerf <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a>    ssize_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(group_ssize)</span>
-<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a>    df2 <span class="ot">&lt;-</span> ssize_total <span class="sc">-</span> group_n <span class="sc">-</span> cov_n</span>
-<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>    dfx <span class="ot">&lt;-</span> df2 <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>    b <span class="ot">&lt;-</span> cov_n <span class="sc">/</span> dfx</span>
-<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a>    fcrit <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qf</span>(<span class="dv">1</span> <span class="sc">-</span> alpha, df1, df2)</span>
-<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (cov_n <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a>      tl <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qt</span>(dd, dfx)</span>
-<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a>      tu <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> dd, dfx)</span>
-<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a>      intl <span class="ot">&lt;-</span> (tu <span class="sc">-</span> tl) <span class="sc">/</span> numint</span>
-<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a>      tvec <span class="ot">&lt;-</span> tl <span class="sc">+</span> intl <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>numint)</span>
-<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a>      wtpdf <span class="ot">&lt;-</span> (intl <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">*</span> coevec <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">dt</span>(tvec, dfx)</span>
-<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a>      epower <span class="ot">&lt;-</span> <span class="fu">sum</span>(wtpdf <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">pf</span>( <span class="co"># nolint</span></span>
-<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a>        fcrit, df1, df2, ssize_total <span class="sc">*</span> <span class="fu">c</span>(lgamsq) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> b <span class="sc">*</span> tvec<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a>      wbpdf <span class="ot">&lt;-</span> (intl <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">*</span> coevec <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">dbeta</span>(bvec, dfx <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb14-127"><a href="#cb14-127" aria-hidden="true" tabindex="-1"></a>                                                  cov_n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb14-128"><a href="#cb14-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-129"><a href="#cb14-129" aria-hidden="true" tabindex="-1"></a>      epower <span class="ot">&lt;-</span> <span class="fu">sum</span>(wbpdf <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">pf</span>(</span>
-<span id="cb14-130"><a href="#cb14-130" aria-hidden="true" tabindex="-1"></a>        fcrit, df1, df2, ssize_total <span class="sc">*</span> lgamsq <span class="sc">*</span> bvec,</span>
-<span id="cb14-131"><a href="#cb14-131" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-132"><a href="#cb14-132" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-133"><a href="#cb14-133" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-134"><a href="#cb14-134" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-135"><a href="#cb14-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-136"><a href="#cb14-136" aria-hidden="true" tabindex="-1"></a>  epower <span class="ot">&lt;-</span> <span class="fu">epowerf</span>()</span>
-<span id="cb14-137"><a href="#cb14-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-138"><a href="#cb14-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">group_n =</span> group_n, <span class="at">cov_n =</span> cov_n, <span class="at">alpha =</span> alpha, <span class="at">lgamsq =</span> lgamsq,</span>
-<span id="cb14-139"><a href="#cb14-139" aria-hidden="true" tabindex="-1"></a>       <span class="at">ssize_group =</span> group_ssize, <span class="at">ssize_total =</span> ssize_total, <span class="at">epower =</span> epower)</span>
-<span id="cb14-140"><a href="#cb14-140" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-141"><a href="#cb14-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-142"><a href="#cb14-142" aria-hidden="true" tabindex="-1"></a>ancova_muhtnp <span class="ot">&lt;-</span> <span class="cf">function</span>(group_n, group_sratio, group_amean, var, cov_n,</span>
-<span id="cb14-143"><a href="#cb14-143" aria-hidden="true" tabindex="-1"></a>                          <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>, <span class="at">contrast =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb14-144"><a href="#cb14-144" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(group_n, <span class="at">lower =</span> <span class="dv">2</span>)</span>
-<span id="cb14-145"><a href="#cb14-145" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_numeric</span>(group_sratio, <span class="at">len =</span> group_n)</span>
-<span id="cb14-146"><a href="#cb14-146" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_numeric</span>(group_amean, <span class="at">len =</span> group_n)</span>
-<span id="cb14-147"><a href="#cb14-147" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(var)</span>
-<span id="cb14-148"><a href="#cb14-148" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_int</span>(cov_n, <span class="at">lower =</span> <span class="dv">1</span>)</span>
-<span id="cb14-149"><a href="#cb14-149" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(alpha, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">1</span>)</span>
-<span id="cb14-150"><a href="#cb14-150" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_number</span>(power, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">1</span>)</span>
-<span id="cb14-151"><a href="#cb14-151" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_matrix</span>(contrast, <span class="at">max.cols =</span> group_n, <span class="at">null.ok =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-152"><a href="#cb14-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-153"><a href="#cb14-153" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(contrast)) {</span>
-<span id="cb14-154"><a href="#cb14-154" aria-hidden="true" tabindex="-1"></a>    contrast <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>, group_n <span class="sc">-</span> <span class="dv">1</span>),</span>
-<span id="cb14-155"><a href="#cb14-155" aria-hidden="true" tabindex="-1"></a>                             group_n <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>), <span class="sc">-</span> <span class="fu">diag</span>(group_n <span class="sc">-</span> <span class="dv">1</span>))</span>
-<span id="cb14-156"><a href="#cb14-156" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-157"><a href="#cb14-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-158"><a href="#cb14-158" aria-hidden="true" tabindex="-1"></a>  checkmate<span class="sc">::</span><span class="fu">assert_true</span>(<span class="fu">all</span>(<span class="fu">rowSums</span>(contrast) <span class="sc">==</span> <span class="dv">0</span>))</span>
-<span id="cb14-159"><a href="#cb14-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-160"><a href="#cb14-160" aria-hidden="true" tabindex="-1"></a>  numint <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb14-161"><a href="#cb14-161" aria-hidden="true" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="fl">1e-5</span></span>
-<span id="cb14-162"><a href="#cb14-162" aria-hidden="true" tabindex="-1"></a>  coevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>), numint <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span>), <span class="dv">4</span>, <span class="dv">1</span>)</span>
-<span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a>  bl <span class="ot">&lt;-</span> dd</span>
-<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a>  bu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> dd</span>
-<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a>  intl <span class="ot">&lt;-</span> (bu <span class="sc">-</span> bl) <span class="sc">/</span> numint</span>
-<span id="cb14-166"><a href="#cb14-166" aria-hidden="true" tabindex="-1"></a>  bvec <span class="ot">&lt;-</span> bl <span class="sc">+</span> intl <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>numint)</span>
-<span id="cb14-167"><a href="#cb14-167" aria-hidden="true" tabindex="-1"></a>  cmu <span class="ot">&lt;-</span> contrast <span class="sc">%*%</span> <span class="fu">matrix</span>(group_amean, group_n, <span class="dv">1</span>)</span>
-<span id="cb14-168"><a href="#cb14-168" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(contrast)</span>
-<span id="cb14-169"><a href="#cb14-169" aria-hidden="true" tabindex="-1"></a>  qmat <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">sum</span>(group_sratio) <span class="sc">/</span> group_sratio)</span>
-<span id="cb14-170"><a href="#cb14-170" aria-hidden="true" tabindex="-1"></a>  lgamsq <span class="ot">&lt;-</span> <span class="fu">t</span>(cmu) <span class="sc">%*%</span> <span class="fu">solve</span>(contrast <span class="sc">%*%</span> qmat <span class="sc">%*%</span> <span class="fu">t</span>(contrast)) <span class="sc">%*%</span></span>
-<span id="cb14-171"><a href="#cb14-171" aria-hidden="true" tabindex="-1"></a>    cmu <span class="sc">/</span> var</span>
-<span id="cb14-172"><a href="#cb14-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-173"><a href="#cb14-173" aria-hidden="true" tabindex="-1"></a>  epowerf <span class="ot">&lt;-</span>  <span class="cf">function</span>() {</span>
-<span id="cb14-174"><a href="#cb14-174" aria-hidden="true" tabindex="-1"></a>    ssize_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(ssize_group)</span>
-<span id="cb14-175"><a href="#cb14-175" aria-hidden="true" tabindex="-1"></a>    df2 <span class="ot">&lt;-</span> ssize_total <span class="sc">-</span> group_n <span class="sc">-</span> cov_n</span>
-<span id="cb14-176"><a href="#cb14-176" aria-hidden="true" tabindex="-1"></a>    dfx <span class="ot">&lt;-</span> df2 <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb14-177"><a href="#cb14-177" aria-hidden="true" tabindex="-1"></a>    b <span class="ot">&lt;-</span> cov_n <span class="sc">/</span> dfx</span>
-<span id="cb14-178"><a href="#cb14-178" aria-hidden="true" tabindex="-1"></a>    fcrit <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qf</span>(<span class="dv">1</span> <span class="sc">-</span> alpha, df1, df2)</span>
-<span id="cb14-179"><a href="#cb14-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-180"><a href="#cb14-180" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (cov_n <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb14-181"><a href="#cb14-181" aria-hidden="true" tabindex="-1"></a>      tl <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qt</span>(dd, dfx)</span>
-<span id="cb14-182"><a href="#cb14-182" aria-hidden="true" tabindex="-1"></a>      tu <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> dd, dfx)</span>
-<span id="cb14-183"><a href="#cb14-183" aria-hidden="true" tabindex="-1"></a>      intl <span class="ot">&lt;-</span> (tu <span class="sc">-</span> tl) <span class="sc">/</span> numint</span>
-<span id="cb14-184"><a href="#cb14-184" aria-hidden="true" tabindex="-1"></a>      tvec <span class="ot">&lt;-</span> tl <span class="sc">+</span> intl <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>numint)</span>
-<span id="cb14-185"><a href="#cb14-185" aria-hidden="true" tabindex="-1"></a>      wtpdf <span class="ot">&lt;-</span> (intl <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">*</span> coevec <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">dt</span>(tvec, dfx)</span>
-<span id="cb14-186"><a href="#cb14-186" aria-hidden="true" tabindex="-1"></a>      ncp <span class="ot">&lt;-</span> ssize_total <span class="sc">*</span> <span class="fu">c</span>(lgamsq) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> b <span class="sc">*</span> tvec<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-187"><a href="#cb14-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-188"><a href="#cb14-188" aria-hidden="true" tabindex="-1"></a>      epower <span class="ot">&lt;-</span> <span class="fu">sum</span>(wtpdf <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">pf</span>( <span class="co"># nolint</span></span>
-<span id="cb14-189"><a href="#cb14-189" aria-hidden="true" tabindex="-1"></a>        fcrit, df1, df2, ncp, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-190"><a href="#cb14-190" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-191"><a href="#cb14-191" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb14-192"><a href="#cb14-192" aria-hidden="true" tabindex="-1"></a>      wbpdf <span class="ot">&lt;-</span> (intl <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">*</span> coevec <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">dbeta</span>(bvec, dfx <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb14-193"><a href="#cb14-193" aria-hidden="true" tabindex="-1"></a>                                                  cov_n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb14-194"><a href="#cb14-194" aria-hidden="true" tabindex="-1"></a>      epower <span class="ot">&lt;-</span> <span class="fu">sum</span>(wbpdf <span class="sc">*</span> stats<span class="sc">::</span><span class="fu">pf</span>(</span>
-<span id="cb14-195"><a href="#cb14-195" aria-hidden="true" tabindex="-1"></a>        fcrit, df1, df2, ssize_total <span class="sc">*</span> lgamsq <span class="sc">*</span> bvec,</span>
-<span id="cb14-196"><a href="#cb14-196" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-197"><a href="#cb14-197" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-198"><a href="#cb14-198" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-199"><a href="#cb14-199" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-200"><a href="#cb14-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-201"><a href="#cb14-201" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb14-202"><a href="#cb14-202" aria-hidden="true" tabindex="-1"></a>  epower <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb14-203"><a href="#cb14-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-204"><a href="#cb14-204" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (epower <span class="sc">&lt;</span> power <span class="sc">&amp;&amp;</span> n <span class="sc">&lt;</span> <span class="dv">1000</span>) {</span>
-<span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a>    ssize_group <span class="ot">&lt;-</span> n <span class="sc">*</span> group_sratio</span>
-<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a>    epower <span class="ot">&lt;-</span> <span class="fu">epowerf</span>()</span>
-<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a>  ssize_group <span class="sc">&lt;</span> <span class="sc">-</span>n <span class="sc">*</span> group_sratio</span>
-<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a>  ssize_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(ssize_group)</span>
-<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">group_n =</span> group_n, <span class="at">cov_n =</span> cov_n, <span class="at">alpha =</span> alpha, <span class="at">power =</span> power,</span>
-<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a>       <span class="at">lgamsq =</span> lgamsq, <span class="at">ssize_group =</span> ssize_group, <span class="at">ssize_total =</span> ssize_total,</span>
-<span id="cb14-215"><a href="#cb14-215" aria-hidden="true" tabindex="-1"></a>       <span class="at">epower =</span> epower)</span>
-<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' Compute a power analysis and sample size for an ANCOVA design</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @description</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' `ancova_muhtpo()` computes the __power__ and  `ancova_muhtnp()` the</span></span>
+<span><span class="co">#' __sample size__ for a generalized linear hypothesis tests of treatment</span></span>
+<span><span class="co">#' effects.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' These functions were adapted from "Program C" and "Program D" algorithms</span></span>
+<span><span class="co">#' found in Shieh (2020) supplementary material.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @details</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' ## `contrast` parameter</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' If `contrast = NULL`, `ancova_muhtnp()` will use the following contrast</span></span>
+<span><span class="co">#' matrix:</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' `cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))`</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' * Example:</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' ```{r}</span></span>
+<span><span class="co">#' group_n &lt;- 3</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' cbind(matrix(rep(1, group_n - 1), group_n - 1, 1), - diag(group_n - 1))</span></span>
+<span><span class="co">#' ```</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' Learn more about "contrast matrices" at</span></span>
+<span><span class="co">#' \url{https://en.wikipedia.org/wiki/Contrast_(statistics)}.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param group_n A number, greater than 1, indicating the number of groups.</span></span>
+<span><span class="co">#' @param group_ssize A [numeric][numeric()] object indicating the groups sample</span></span>
+<span><span class="co">#'   sizes.</span></span>
+<span><span class="co">#' @param group_sratio A [numeric][numeric()] object indicating the groups</span></span>
+<span><span class="co">#'   sample ratios.</span></span>
+<span><span class="co">#' @param group_amean A [numeric][numeric()] object indicating the adjusted</span></span>
+<span><span class="co">#'   group means.</span></span>
+<span><span class="co">#' @param var A number indicating the variance.</span></span>
+<span><span class="co">#' @param cov_n A number, greater than 0, indicating the number of covariates.</span></span>
+<span><span class="co">#' @param alpha (optional) a number, from `0` to `1`, indicating the designated</span></span>
+<span><span class="co">#'   significant level (\eqn{\alpha}{alpha}) (default: `0.05`).</span></span>
+<span><span class="co">#' @param power (optional) a number, between 0 and 1, indicating the nominal</span></span>
+<span><span class="co">#'   power (default: `0.8`).</span></span>
+<span><span class="co">#' @param contrast (optional) a [matrix][matrix()] object with the contrast</span></span>
+<span><span class="co">#' coefficients. See the Details section to learn more (default: `NULL`).</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A [list][list()] object with the following elements:</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' * `group_n`: a number indicating the number of groups.</span></span>
+<span><span class="co">#' * `cov_n`: a number indicating the number of covariates.</span></span>
+<span><span class="co">#' * `alpha`: a number indicating the designated significant level</span></span>
+<span><span class="co">#' (\eqn{\alpha}{alpha}) used.</span></span>
+<span><span class="co">#' * `power`: a number indicating the nominal power used (only for</span></span>
+<span><span class="co">#' `ancova_muhtnp()`).</span></span>
+<span><span class="co">#' * `lgamsq`: a [matrix][matrix()] object indicating `?`.</span></span>
+<span><span class="co">#' * `ssize_group`: a [numeric][numeric()] object indicating the sample size for</span></span>
+<span><span class="co">#' each group.</span></span>
+<span><span class="co">#' * `ssize_total`: a number indicating the total sample size.</span></span>
+<span><span class="co">#' * `epower`: a number indicating the estimated statistical power for the</span></span>
+<span><span class="co">#' sample size (\eqn{1 - \beta}).</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @references</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs.</span></span>
+<span><span class="co">#' _Psychometrika_, _85_(1), 101–120. \doi{10.1007/s11336-019-09692-3}</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' ancova_muhtpo(group_n = 3, group_ssize = c(10, 10, 10),</span></span>
+<span><span class="co">#'               group_amean = c(7.5366, 11.9849, 13.9785),</span></span>
+<span><span class="co">#'               var = 29.0898, cov_n = 1, alpha = 0.05, contrast = NULL)</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' ancova_muhtnp(group_n = 3, group_sratio = c(1, 1, 1),</span></span>
+<span><span class="co">#'               group_amean = c(7.5366, 11.9849, 13.9785),</span></span>
+<span><span class="co">#'               var = 29.0898, cov_n = 1, alpha = 0.05, power = 0.8,</span></span>
+<span><span class="co">#'               contrast = NULL)</span></span>
+<span><span class="va">ancova_muhtpo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">group_n</span>, <span class="va">group_ssize</span>, <span class="va">group_amean</span>, <span class="va">var</span>, <span class="va">cov_n</span>,</span>
+<span>                          <span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>, <span class="va">contrast</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">group_n</span>, lower <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumeric.html">assert_numeric</a></span><span class="op">(</span><span class="va">group_ssize</span>, len <span class="op">=</span> <span class="va">group_n</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumeric.html">assert_numeric</a></span><span class="op">(</span><span class="va">group_amean</span>, len <span class="op">=</span> <span class="va">group_n</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">cov_n</span>, lower <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">alpha</span>, lower <span class="op">=</span> <span class="fl">0</span>, upper <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkMatrix.html">assert_matrix</a></span><span class="op">(</span><span class="va">contrast</span>, max.cols <span class="op">=</span> <span class="va">group_n</span>, null.ok <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                             <span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkTRUE.html">assert_true</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">numint</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span>
+<span>  <span class="va">dd</span> <span class="op">&lt;-</span> <span class="fl">1e-5</span></span>
+<span>  <span class="va">coevec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, <span class="va">numint</span> <span class="op">/</span> <span class="fl">2</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">bl</span> <span class="op">&lt;-</span> <span class="va">dd</span></span>
+<span>  <span class="va">bu</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">dd</span></span>
+<span>  <span class="va">intl</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">bu</span> <span class="op">-</span> <span class="va">bl</span><span class="op">)</span> <span class="op">/</span> <span class="va">numint</span></span>
+<span>  <span class="va">bvec</span> <span class="op">&lt;-</span> <span class="va">bl</span> <span class="op">+</span> <span class="va">intl</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">numint</span><span class="op">)</span></span>
+<span>  <span class="va">cmu</span> <span class="op">&lt;-</span> <span class="va">contrast</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">group_amean</span>, <span class="va">group_n</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span></span>
+<span>  <span class="va">ssize_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">group_ssize</span><span class="op">)</span></span>
+<span>  <span class="va">qmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">ssize_total</span> <span class="op">/</span> <span class="va">group_ssize</span><span class="op">)</span></span>
+<span>  <span class="va">lgamsq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">cmu</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">qmat</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">cmu</span> <span class="op">/</span> <span class="va">var</span></span>
+<span></span>
+<span>  <span class="va">epowerf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">ssize_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">group_ssize</span><span class="op">)</span></span>
+<span>    <span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">ssize_total</span> <span class="op">-</span> <span class="va">group_n</span> <span class="op">-</span> <span class="va">cov_n</span></span>
+<span>    <span class="va">dfx</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">cov_n</span> <span class="op">/</span> <span class="va">dfx</span></span>
+<span>    <span class="va">fcrit</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span>, <span class="va">df1</span>, <span class="va">df2</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">cov_n</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">tl</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="va">dd</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span>      <span class="va">tu</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">dd</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span>      <span class="va">intl</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">tu</span> <span class="op">-</span> <span class="va">tl</span><span class="op">)</span> <span class="op">/</span> <span class="va">numint</span></span>
+<span>      <span class="va">tvec</span> <span class="op">&lt;-</span> <span class="va">tl</span> <span class="op">+</span> <span class="va">intl</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">numint</span><span class="op">)</span></span>
+<span>      <span class="va">wtpdf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">intl</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">*</span> <span class="va">coevec</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="va">tvec</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span></span>
+<span>      <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">wtpdf</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span> <span class="co"># nolint</span></span>
+<span>        <span class="va">fcrit</span>, <span class="va">df1</span>, <span class="va">df2</span>, <span class="va">ssize_total</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lgamsq</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">b</span> <span class="op">*</span> <span class="va">tvec</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>        lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="va">wbpdf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">intl</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">*</span> <span class="va">coevec</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html">dbeta</a></span><span class="op">(</span><span class="va">bvec</span>, <span class="va">dfx</span> <span class="op">/</span> <span class="fl">2</span>,</span>
+<span>                                                  <span class="va">cov_n</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span>      <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">wbpdf</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span></span>
+<span>        <span class="va">fcrit</span>, <span class="va">df1</span>, <span class="va">df2</span>, <span class="va">ssize_total</span> <span class="op">*</span> <span class="va">lgamsq</span> <span class="op">*</span> <span class="va">bvec</span>,</span>
+<span>        lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu">epowerf</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>group_n <span class="op">=</span> <span class="va">group_n</span>, cov_n <span class="op">=</span> <span class="va">cov_n</span>, alpha <span class="op">=</span> <span class="va">alpha</span>, lgamsq <span class="op">=</span> <span class="va">lgamsq</span>,</span>
+<span>       ssize_group <span class="op">=</span> <span class="va">group_ssize</span>, ssize_total <span class="op">=</span> <span class="va">ssize_total</span>, epower <span class="op">=</span> <span class="va">epower</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">ancova_muhtnp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">group_n</span>, <span class="va">group_sratio</span>, <span class="va">group_amean</span>, <span class="va">var</span>, <span class="va">cov_n</span>,</span>
+<span>                          <span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>, <span class="va">power</span> <span class="op">=</span> <span class="fl">0.8</span>, <span class="va">contrast</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">group_n</span>, lower <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumeric.html">assert_numeric</a></span><span class="op">(</span><span class="va">group_sratio</span>, len <span class="op">=</span> <span class="va">group_n</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumeric.html">assert_numeric</a></span><span class="op">(</span><span class="va">group_amean</span>, len <span class="op">=</span> <span class="va">group_n</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkInt.html">assert_int</a></span><span class="op">(</span><span class="va">cov_n</span>, lower <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">alpha</span>, lower <span class="op">=</span> <span class="fl">0</span>, upper <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkNumber.html">assert_number</a></span><span class="op">(</span><span class="va">power</span>, lower <span class="op">=</span> <span class="fl">0</span>, upper <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkMatrix.html">assert_matrix</a></span><span class="op">(</span><span class="va">contrast</span>, max.cols <span class="op">=</span> <span class="va">group_n</span>, null.ok <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                             <span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">group_n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/checkTRUE.html">assert_true</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">numint</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span>
+<span>  <span class="va">dd</span> <span class="op">&lt;-</span> <span class="fl">1e-5</span></span>
+<span>  <span class="va">coevec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, <span class="va">numint</span> <span class="op">/</span> <span class="fl">2</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">bl</span> <span class="op">&lt;-</span> <span class="va">dd</span></span>
+<span>  <span class="va">bu</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">dd</span></span>
+<span>  <span class="va">intl</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">bu</span> <span class="op">-</span> <span class="va">bl</span><span class="op">)</span> <span class="op">/</span> <span class="va">numint</span></span>
+<span>  <span class="va">bvec</span> <span class="op">&lt;-</span> <span class="va">bl</span> <span class="op">+</span> <span class="va">intl</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">numint</span><span class="op">)</span></span>
+<span>  <span class="va">cmu</span> <span class="op">&lt;-</span> <span class="va">contrast</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">group_amean</span>, <span class="va">group_n</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span></span>
+<span>  <span class="va">qmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">group_sratio</span><span class="op">)</span> <span class="op">/</span> <span class="va">group_sratio</span><span class="op">)</span></span>
+<span>  <span class="va">lgamsq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">cmu</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">qmat</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span></span>
+<span>    <span class="va">cmu</span> <span class="op">/</span> <span class="va">var</span></span>
+<span></span>
+<span>  <span class="va">epowerf</span> <span class="op">&lt;-</span>  <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">ssize_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">ssize_group</span><span class="op">)</span></span>
+<span>    <span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">ssize_total</span> <span class="op">-</span> <span class="va">group_n</span> <span class="op">-</span> <span class="va">cov_n</span></span>
+<span>    <span class="va">dfx</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">cov_n</span> <span class="op">/</span> <span class="va">dfx</span></span>
+<span>    <span class="va">fcrit</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span>, <span class="va">df1</span>, <span class="va">df2</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">cov_n</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">tl</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="va">dd</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span>      <span class="va">tu</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">dd</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span>      <span class="va">intl</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">tu</span> <span class="op">-</span> <span class="va">tl</span><span class="op">)</span> <span class="op">/</span> <span class="va">numint</span></span>
+<span>      <span class="va">tvec</span> <span class="op">&lt;-</span> <span class="va">tl</span> <span class="op">+</span> <span class="va">intl</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">numint</span><span class="op">)</span></span>
+<span>      <span class="va">wtpdf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">intl</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">*</span> <span class="va">coevec</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="va">tvec</span>, <span class="va">dfx</span><span class="op">)</span></span>
+<span>      <span class="va">ncp</span> <span class="op">&lt;-</span> <span class="va">ssize_total</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lgamsq</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">b</span> <span class="op">*</span> <span class="va">tvec</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span>      <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">wtpdf</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span> <span class="co"># nolint</span></span>
+<span>        <span class="va">fcrit</span>, <span class="va">df1</span>, <span class="va">df2</span>, <span class="va">ncp</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="va">wbpdf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">intl</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">*</span> <span class="va">coevec</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html">dbeta</a></span><span class="op">(</span><span class="va">bvec</span>, <span class="va">dfx</span> <span class="op">/</span> <span class="fl">2</span>,</span>
+<span>                                                  <span class="va">cov_n</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>      <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">wbpdf</span> <span class="op">*</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span></span>
+<span>        <span class="va">fcrit</span>, <span class="va">df1</span>, <span class="va">df2</span>, <span class="va">ssize_total</span> <span class="op">*</span> <span class="va">lgamsq</span> <span class="op">*</span> <span class="va">bvec</span>,</span>
+<span>        lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span>  <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span>  <span class="kw">while</span> <span class="op">(</span><span class="va">epower</span> <span class="op">&lt;</span> <span class="va">power</span> <span class="op">&amp;&amp;</span> <span class="va">n</span> <span class="op">&lt;</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">n</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>    <span class="va">ssize_group</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">*</span> <span class="va">group_sratio</span></span>
+<span>    <span class="va">epower</span> <span class="op">&lt;-</span> <span class="fu">epowerf</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">ssize_group</span> <span class="op">&lt;</span> <span class="op">-</span><span class="va">n</span> <span class="op">*</span> <span class="va">group_sratio</span></span>
+<span>  <span class="va">ssize_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">ssize_group</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>group_n <span class="op">=</span> <span class="va">group_n</span>, cov_n <span class="op">=</span> <span class="va">cov_n</span>, alpha <span class="op">=</span> <span class="va">alpha</span>, power <span class="op">=</span> <span class="va">power</span>,</span>
+<span>       lgamsq <span class="op">=</span> <span class="va">lgamsq</span>, ssize_group <span class="op">=</span> <span class="va">ssize_group</span>, ssize_total <span class="op">=</span> <span class="va">ssize_total</span>,</span>
+<span>       epower <span class="op">=</span> <span class="va">epower</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="waso-3" class="level4">
-<h4 class="anchored" data-anchor-id="waso-3">WASO</h4>
+<section id="waso-3" class="level4"><h4 class="anchored" data-anchor-id="waso-3">WASO</h4>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 1: 15+</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>n_1_waso <span class="ot">&lt;-</span> <span class="dv">41</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>mean_1_adj_waso <span class="ot">&lt;-</span> <span class="dv">26</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>sd_1_waso <span class="ot">&lt;-</span> <span class="fl">11.7</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 2: 10%-14.9%</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>n_2_waso <span class="ot">&lt;-</span> <span class="dv">32</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>mean_2_adj_waso <span class="ot">&lt;-</span> <span class="fl">16.3</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>sd_2_waso <span class="ot">&lt;-</span> <span class="fl">12.9</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 3: &lt;10%</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>n_3_waso <span class="ot">&lt;-</span> <span class="dv">58</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>mean_3_adj_waso <span class="ot">&lt;-</span> <span class="fl">18.3</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>sd_3_waso <span class="ot">&lt;-</span> <span class="fl">14.6</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>group_sratio <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  n_1_waso <span class="sc">/</span> n_total_waso, </span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  n_2_waso <span class="sc">/</span> n_total_waso, </span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  n_3_waso <span class="sc">/</span> n_total_waso</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>group_amean <span class="ot">&lt;-</span> <span class="fu">c</span>(mean_1_adj_waso, mean_2_adj_waso, mean_3_adj_waso)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>sd_pooled <span class="ot">&lt;-</span> </span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">c</span>(n_1_waso, n_2_waso, n_3_waso) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">*</span><span class="st">`</span>(<span class="fu">c</span>(sd_1_waso, sd_2_waso, sd_3_waso)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">/</span><span class="st">`</span>(<span class="fu">sum</span>((<span class="fu">c</span>(n_1_waso, n_2_waso, n_3_waso) <span class="sc">-</span> <span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>var_pooled <span class="ot">&lt;-</span> sd_pooled<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="fu">ancova_muhtnp</span>(</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_n =</span> k, </span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_sratio =</span> group_sratio, </span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_amean =</span> group_amean, </span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">var =</span> var_pooled, </span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">cov_n =</span> <span class="dv">1</span>, </span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> alpha, </span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> power, </span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">contrast =</span> <span class="cn">NULL</span></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $group_n</span></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cov_n</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $power</span></span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8</span></span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $lgamsq</span></span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            [,1]</span></span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 0.08899738</span></span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ssize_group</span></span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 35.23438 27.50000 49.84375</span></span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ssize_total</span></span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 112.5781</span></span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $epower</span></span>
-<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8008998</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Group 1: 15+</span></span>
+<span><span class="va">n_1_waso</span> <span class="op">&lt;-</span> <span class="fl">41</span></span>
+<span><span class="va">mean_1_adj_waso</span> <span class="op">&lt;-</span> <span class="fl">26</span></span>
+<span><span class="va">sd_1_waso</span> <span class="op">&lt;-</span> <span class="fl">11.7</span></span>
+<span></span>
+<span><span class="co"># Group 2: 10%-14.9%</span></span>
+<span><span class="va">n_2_waso</span> <span class="op">&lt;-</span> <span class="fl">32</span></span>
+<span><span class="va">mean_2_adj_waso</span> <span class="op">&lt;-</span> <span class="fl">16.3</span></span>
+<span><span class="va">sd_2_waso</span> <span class="op">&lt;-</span> <span class="fl">12.9</span></span>
+<span></span>
+<span><span class="co"># Group 3: &lt;10%</span></span>
+<span><span class="va">n_3_waso</span> <span class="op">&lt;-</span> <span class="fl">58</span></span>
+<span><span class="va">mean_3_adj_waso</span> <span class="op">&lt;-</span> <span class="fl">18.3</span></span>
+<span><span class="va">sd_3_waso</span> <span class="op">&lt;-</span> <span class="fl">14.6</span></span>
+<span></span>
+<span><span class="va">group_sratio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="va">n_1_waso</span> <span class="op">/</span> <span class="va">n_total_waso</span>, </span>
+<span>  <span class="va">n_2_waso</span> <span class="op">/</span> <span class="va">n_total_waso</span>, </span>
+<span>  <span class="va">n_3_waso</span> <span class="op">/</span> <span class="va">n_total_waso</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">group_amean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mean_1_adj_waso</span>, <span class="va">mean_2_adj_waso</span>, <span class="va">mean_3_adj_waso</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sd_pooled</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">n_1_waso</span>, <span class="va">n_2_waso</span>, <span class="va">n_3_waso</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`*`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sd_1_waso</span>, <span class="va">sd_2_waso</span>, <span class="va">sd_3_waso</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">`/`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">n_1_waso</span>, <span class="va">n_2_waso</span>, <span class="va">n_3_waso</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">var_pooled</span> <span class="op">&lt;-</span> <span class="va">sd_pooled</span><span class="op">^</span><span class="fl">2</span></span>
+<span></span>
+<span><span class="fu">ancova_muhtnp</span><span class="op">(</span></span>
+<span>  group_n <span class="op">=</span> <span class="va">k</span>, </span>
+<span>  group_sratio <span class="op">=</span> <span class="va">group_sratio</span>, </span>
+<span>  group_amean <span class="op">=</span> <span class="va">group_amean</span>, </span>
+<span>  var <span class="op">=</span> <span class="va">var_pooled</span>, </span>
+<span>  cov_n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  alpha <span class="op">=</span> <span class="va">alpha</span>, </span>
+<span>  power <span class="op">=</span> <span class="va">power</span>, </span>
+<span>  contrast <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $group_n</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $cov_n</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $power</span></span>
+<span><span class="co">#&gt; [1] 0.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lgamsq</span></span>
+<span><span class="co">#&gt;            [,1]</span></span>
+<span><span class="co">#&gt; [1,] 0.08899738</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ssize_group</span></span>
+<span><span class="co">#&gt; [1] 35.23438 27.50000 49.84375</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ssize_total</span></span>
+<span><span class="co">#&gt; [1] 112.5781</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $epower</span></span>
+<span><span class="co">#&gt; [1] 0.8008998</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="tst-3" class="level4">
-<h4 class="anchored" data-anchor-id="tst-3">TST</h4>
+</section><section id="tst-3" class="level4"><h4 class="anchored" data-anchor-id="tst-3">TST</h4>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 1: &lt;6 h</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_1_tst <span class="ot">&lt;-</span> <span class="dv">19</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>mean_1_adj_tst <span class="ot">&lt;-</span> <span class="dv">29</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sd_1_tst <span class="ot">&lt;-</span> <span class="fl">12.5</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 2: 6-6.9 h</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>n_2_tst <span class="ot">&lt;-</span> <span class="dv">38</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>mean_2_adj_tst <span class="ot">&lt;-</span> <span class="fl">20.5</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>sd_2_tst <span class="ot">&lt;-</span> <span class="fl">11.3</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Group 3: 7+ h</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>n_3_tst <span class="ot">&lt;-</span> <span class="dv">74</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>mean_3_adj_tst <span class="ot">&lt;-</span> <span class="fl">17.7</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>sd_3_tst <span class="ot">&lt;-</span> <span class="fl">15.6</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>group_sratio <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  n_1_tst <span class="sc">/</span> n_total_tst, </span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  n_2_tst <span class="sc">/</span> n_total_tst, </span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  n_3_tst <span class="sc">/</span> n_total_tst</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>group_amean <span class="ot">&lt;-</span> <span class="fu">c</span>(mean_1_adj_tst, mean_2_adj_tst, mean_3_adj_tst)</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>sd_pooled <span class="ot">&lt;-</span> </span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">c</span>(n_1_tst, n_2_tst, n_3_tst) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">*</span><span class="st">`</span>(<span class="fu">c</span>(sd_1_tst, sd_2_tst, sd_3_tst)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">/</span><span class="st">`</span>(<span class="fu">sum</span>((<span class="fu">c</span>(n_1_tst, n_2_tst, n_3_tst) <span class="sc">-</span> <span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>var_pooled <span class="ot">&lt;-</span> sd_pooled<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="fu">ancova_muhtnp</span>(</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_n =</span> k, </span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_sratio =</span> group_sratio, </span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_amean =</span> group_amean, </span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">var =</span> var_pooled, </span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">cov_n =</span> <span class="dv">1</span>, </span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> alpha, </span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> power, </span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">contrast =</span> <span class="cn">NULL</span></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $group_n</span></span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cov_n</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $power</span></span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8</span></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $lgamsq</span></span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            [,1]</span></span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 0.07479986</span></span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ssize_group</span></span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 19.29688 38.59375 75.15625</span></span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ssize_total</span></span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 133.0469</span></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $epower</span></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8005404</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Group 1: &lt;6 h</span></span>
+<span><span class="va">n_1_tst</span> <span class="op">&lt;-</span> <span class="fl">19</span></span>
+<span><span class="va">mean_1_adj_tst</span> <span class="op">&lt;-</span> <span class="fl">29</span></span>
+<span><span class="va">sd_1_tst</span> <span class="op">&lt;-</span> <span class="fl">12.5</span></span>
+<span></span>
+<span><span class="co"># Group 2: 6-6.9 h</span></span>
+<span><span class="va">n_2_tst</span> <span class="op">&lt;-</span> <span class="fl">38</span></span>
+<span><span class="va">mean_2_adj_tst</span> <span class="op">&lt;-</span> <span class="fl">20.5</span></span>
+<span><span class="va">sd_2_tst</span> <span class="op">&lt;-</span> <span class="fl">11.3</span></span>
+<span></span>
+<span><span class="co"># Group 3: 7+ h</span></span>
+<span><span class="va">n_3_tst</span> <span class="op">&lt;-</span> <span class="fl">74</span></span>
+<span><span class="va">mean_3_adj_tst</span> <span class="op">&lt;-</span> <span class="fl">17.7</span></span>
+<span><span class="va">sd_3_tst</span> <span class="op">&lt;-</span> <span class="fl">15.6</span></span>
+<span></span>
+<span><span class="va">group_sratio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="va">n_1_tst</span> <span class="op">/</span> <span class="va">n_total_tst</span>, </span>
+<span>  <span class="va">n_2_tst</span> <span class="op">/</span> <span class="va">n_total_tst</span>, </span>
+<span>  <span class="va">n_3_tst</span> <span class="op">/</span> <span class="va">n_total_tst</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">group_amean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mean_1_adj_tst</span>, <span class="va">mean_2_adj_tst</span>, <span class="va">mean_3_adj_tst</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sd_pooled</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">n_1_tst</span>, <span class="va">n_2_tst</span>, <span class="va">n_3_tst</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`*`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sd_1_tst</span>, <span class="va">sd_2_tst</span>, <span class="va">sd_3_tst</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">`/`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">n_1_tst</span>, <span class="va">n_2_tst</span>, <span class="va">n_3_tst</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">var_pooled</span> <span class="op">&lt;-</span> <span class="va">sd_pooled</span><span class="op">^</span><span class="fl">2</span></span>
+<span></span>
+<span><span class="fu">ancova_muhtnp</span><span class="op">(</span></span>
+<span>  group_n <span class="op">=</span> <span class="va">k</span>, </span>
+<span>  group_sratio <span class="op">=</span> <span class="va">group_sratio</span>, </span>
+<span>  group_amean <span class="op">=</span> <span class="va">group_amean</span>, </span>
+<span>  var <span class="op">=</span> <span class="va">var_pooled</span>, </span>
+<span>  cov_n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  alpha <span class="op">=</span> <span class="va">alpha</span>, </span>
+<span>  power <span class="op">=</span> <span class="va">power</span>, </span>
+<span>  contrast <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $group_n</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $cov_n</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $power</span></span>
+<span><span class="co">#&gt; [1] 0.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lgamsq</span></span>
+<span><span class="co">#&gt;            [,1]</span></span>
+<span><span class="co">#&gt; [1,] 0.07479986</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ssize_group</span></span>
+<span><span class="co">#&gt; [1] 19.29688 38.59375 75.15625</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ssize_total</span></span>
+<span><span class="co">#&gt; [1] 133.0469</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $epower</span></span>
+<span><span class="co">#&gt; [1] 0.8005404</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-</section>
-</section>
-<section id="references" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+</section></section></section><section id="references" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-cohen1988" class="csl-entry" role="listitem">
 Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed.). <span>Lawrence Erlbaum Associates</span>.
@@ -881,10 +811,7 @@ Shieh, G. (2020). Power analysis and sample size planning in <span>ANCOVA</span>
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -919,18 +846,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -962,7 +878,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/danielvartan\.github\.io\/sample-size\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -997,7 +953,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1012,38 +972,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -1052,8 +1002,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -1275,7 +1232,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 
